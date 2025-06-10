@@ -6,31 +6,41 @@
 /*   By: abignals <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:48:48 by abignals          #+#    #+#             */
-/*   Updated: 2025/06/10 12:56:42 by abignals         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:33:35 by abignals         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	signal_handler(int signum)
-{
-	
-}
+#include "/Printf/printf.h"
+#include "minitalk.h"
 
-void	server()
+
+void	main_handler(int signum)
 {
-	int	pid;
-	int	signal;
-	
-	pid = getpid();
-	while (1 == 1)
+	if (signum == SIGUSR1)
 	{
-		signal = signal_handler()
-		//Decrypt signal
+		
+	}
+	if (signum == SIGUSR2)
+	{
+		
 	}
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	
+	if (argc != 1)
+	{
+		ft_printf("WRONG FORMAT\n SERVER REQUIRES NO ARGUMENT\n");
+		return (0);
+	}
+	ft_printf("%d", getpid()); 
+	while (1)
+	{
+		signal(SIGUSR1, main_handler);
+		signal(SIGUSR2, main_handler);
+		pause();
+	}
+	return (0);
 }
 
 
