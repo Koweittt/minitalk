@@ -6,14 +6,15 @@
 /*   By: abignals <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 10:23:09 by abignals          #+#    #+#             */
-/*   Updated: 2025/06/10 16:32:25 by abignals         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:11:41 by abignals         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../inc/minitalk.h"
 
 int	ft_atoi(char *str)
 {
 	int	res;
-	int	count;
 	int	i;
 
 	i = 0;
@@ -28,56 +29,39 @@ int	ft_atoi(char *str)
 	return (res);
 }
 
-void	send_messages(int PID, char *str)
+void	send_messages(int PID, char i)
 {
-	int	i;
-	int	j;
+	int	bit;
 
-	i = 0;
-	while (str[i])
+	bit = 0;
+	while (bit < 8)
 	{
-		j = -1;
-		while (j++ < 8)
-		{
-			if ((unsigned char)(str[i] >> (7 - i) & 1) == 0)
-				kill(PID, SIGUSR1);
-			if ((unsigned char)(str[i] >> (7 - i) & 1) == 1)
-				kill(PID, SIGUSR2);
-			usleep(25);	
-		}
-		i++;
-	}
-	i = 0;
-	while (i++ < 8)
-	{
-		kill(PID, SIGUSR1);
-		usleep(25);	
+		if ((i & (0x01 << bit)) != 0)
+			kill(PID, SIGUSR1);
+		else
+			kill(PID, SIGUSR2);
+		usleep(100);
+		bit++;
 	}
 }
 
 int	main(int argc, char **argv)
 {
 	int	server_id;
+	int	i;
 
-
+	i = 0;
 	if (argc == 3)
 	{
 		server_id = ft_atoi(argv[1]);
-		if (!server_id)
+		while (argv[2][i])
 		{
-			write(1, "[ERROR] Wrong Argi\n", 18);
-			return (0);
+			send_messages(server_id, argv[2][i]);
+			i++;
 		}
-		message = argv[2];
-		if (!message)
-		{
-			write(1, "[ERROR] Wrong Arg\n" 18);
-			return (0);
-		}
-		send_messages(server_id, message);
+		send_messages(server_id, '\n');
 	}
 	else
 		write(1, "Too much or too few arguments\n", 31);
 	return (0);
 }
-

@@ -1,3 +1,0 @@
-Create a Makefile that create server and client exectuables
-Manage error & remove all leaks
-Deal with norm
