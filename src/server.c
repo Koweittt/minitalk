@@ -6,7 +6,7 @@
 /*   By: abignals <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:48:48 by abignals          #+#    #+#             */
-/*   Updated: 2025/06/12 11:14:09 by abignals         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:51:44 by abignals         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	main_handler(int signum)
 }
 
 int	main(int argc, char **argv)
-{
+{	
 	(void)argv;
 	if (argc != 1)
 	{
