@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abignals <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: abignals <abignals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 10:23:09 by abignals          #+#    #+#             */
-/*   Updated: 2025/06/12 11:11:41 by abignals         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:25:22 by abignals         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minitalk.h"
 
-int	ft_atoi(char *str)
+static int	ft_atoi(char *str)
 {
 	int	res;
 	int	i;
