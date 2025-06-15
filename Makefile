@@ -10,7 +10,7 @@ RM              = rm -f
 # ---- Sources (Mandatory) ---- #
 SRCS_CLIENT     = src/client.c
 SRCS_SERVER     = src/server.c
-SRCS_PRINTF     = Printf/ft_printf.c Printf/ft_printf_utils.c Printf/ft_printf_utils2.c
+SRCS_PRINTF     = printf/ft_printf.c printf/ft_printf_utils.c printf/ft_printf_utils2.c
 
 # ---- Sources (Bonus) ---- #
 SRCS_CLIENT_BONUS = src/client_bonus.c 

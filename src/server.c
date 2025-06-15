@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abignals <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: abignals <abignals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:48:48 by abignals          #+#    #+#             */
-/*   Updated: 2025/06/13 11:47:29 by abignals         ###   ########.fr       */
+/*   Updated: 2025/06/15 12:46:40 by abignals         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minitalk.h"
-#include "../Printf/ft_printf.h"
+#include "../printf/ft_printf.h"
 
 void	main_handler(int signum)
 {
@@ -30,7 +30,7 @@ void	main_handler(int signum)
 }
 
 int	main(int argc, char **argv)
-{	
+{
 	(void)argv;
 	if (argc != 1)
 	{

@@ -6,12 +6,12 @@
 /*   By: abignals <abignals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 11:27:27 by abignals          #+#    #+#             */
-/*   Updated: 2025/06/12 14:02:36 by abignals         ###   ########.fr       */
+/*   Updated: 2025/06/15 12:46:36 by abignals         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minitalk_bonus.h"
-#include "../Printf/ft_printf.h"
+#include "../printf/ft_printf.h"
 
 void	main_handler(int signum, siginfo_t *info, void *s)
 {
@@ -34,7 +34,7 @@ void	main_handler(int signum, siginfo_t *info, void *s)
 
 int	main(int argc, char **argv)
 {
-	struct sigaction	sig;	
+	struct sigaction	sig;
 
 	(void)argv;
 	if (argc != 1)
