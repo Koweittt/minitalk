@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk_bonus.h                                   :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abignals <abignals@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abignals <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/12 11:27:10 by abignals          #+#    #+#             */
-/*   Updated: 2025/06/15 12:47:51 by abignals         ###   ########.fr       */
+/*   Created: 2025/04/28 16:21:49 by abignals          #+#    #+#             */
+/*   Updated: 2025/04/28 16:22:57 by abignals         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_BONUS_H
-# define MINITALK_BONUS_H
+#include "libft.h"
 
-# include "../printf/ft_printf.h"
-# include <signal.h>
+void	*ft_memchr(const void *s, int c, size_t n)
+{
+	size_t	i;
 
-#endif
+	i = 0;
+	while (i < n)
+	{
+		if (*(unsigned char *)(s + i) == (unsigned char)c)
+			return ((void *)s + i);
+		i++;
+	}
+	return (NULL);
+}

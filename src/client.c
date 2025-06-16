@@ -6,62 +6,92 @@
 /*   By: abignals <abignals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 10:23:09 by abignals          #+#    #+#             */
-/*   Updated: 2025/06/13 11:45:49 by abignals         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:03:18 by abignals         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minitalk.h"
 
-static int	ft_atoi(char *str)
+int	send_char(char p_c, pid_t p_pid)
 {
-	int	res;
-	int	i;
+	static int		bit = -1;
+	static char		c;
+	static pid_t	pid;
 
-	i = 0;
-	res = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	while (str[i] >= '0' && str[i] <= '9' && str[i])
+	if (p_pid)
 	{
-		res = res * 10 + (str[i] - '0');
-		i++;
+		c = p_c;
+		pid = p_pid;
 	}
-	return (res);
+	if (bit < 0)
+		bit = __CHAR_BIT__ * sizeof(c) - 1;
+	if (kill(pid, 0) < 0)
+	{
+		ft_printf("ERROR : cant send sig to pid : %d\n", pid);
+		exit(EXIT_FAILURE);
+	}
+	if (c & (1 << bit))
+		kill(pid, SIGUSR1);
+	else
+		kill(pid, SIGUSR2);
+	bit--;
+	return (bit);
 }
 
-void	send_messages(int PID, char i)
+void	send_str(char *p_str, pid_t p_pid)
 {
-	int	bit;
+	static int		cur = 0;
+	static char		*str;
+	static pid_t	pid;
+	static int		bit = -1;
 
-	bit = 0;
-	while (bit < 8)
+	if (p_pid)
 	{
-		if ((i & (0x01 << bit)) != 0)
-			kill(PID, SIGUSR1);
-		else
-			kill(PID, SIGUSR2);
-		usleep(100);
-		bit++;
+		str = p_str;
+		pid = p_pid;
 	}
+	if (bit < 0)
+	{
+		if (str[cur])
+		{
+			bit = send_char(str[cur], pid);
+			cur++;
+		}
+		else
+			bit = send_char(0, pid);
+	}
+	else
+	{
+		bit = send_char(0, 0);
+	}
+}
+
+void	sig_usr(int sig)
+{
+	if (sig == SIGUSR1)
+		send_str("", 0);
+	else if (sig == SIGUSR2)
+		exit(EXIT_SUCCESS);
 }
 
 int	main(int argc, char **argv)
 {
-	int	server_id;
-	int	i;
+	pid_t	pid;
 
-	i = 0;
-	if (argc == 3)
+	if (argc != 3)
 	{
-		server_id = ft_atoi(argv[1]);
-		while (argv[2][i])
-		{
-			send_messages(server_id, argv[2][i]);
-			i++;
-		}
-		send_messages(server_id, '\n');
+		ft_printf("Usage : ./client <pid> <string to send>\n");
+		exit(EXIT_FAILURE);
 	}
-	else
-		write(1, "Too much or too few arguments\n", 31);
-	return (0);
+	signal(SIGUSR1, &sig_usr);
+	signal(SIGUSR2, &sig_usr);
+	pid = ft_atoi(argv[1]);
+	if (!pid)
+	{
+		ft_printf("%s is an invalid pid\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+	send_str(argv[2], pid);
+	while (1)
+		sleep(1);
 }

@@ -6,43 +6,44 @@
 /*   By: abignals <abignals@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 12:48:48 by abignals          #+#    #+#             */
-/*   Updated: 2025/06/15 12:46:40 by abignals         ###   ########.fr       */
+/*   Updated: 2025/06/16 13:13:09 by abignals         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minitalk.h"
-#include "../printf/ft_printf.h"
 
-void	main_handler(int signum)
+void	sig_usr(int sig, siginfo_t *info, void *context)
 {
-	static int	bit;
-	static int	i;
+	static char	c = 0;
+	static int	bit = -1;
 
-	if (signum == SIGUSR1)
-		i |= (0x01 << bit);
-	bit++;
-	if (bit == 8)
+	(void)context;
+	if (kill(info->si_pid, 0) < 0)
 	{
-		ft_printf("%c", i);
-		i = 0;
-		bit = 0;
+		ft_printf("ERROR : cant send sig to pid : %d\n", info->si_pid);
+		exit(EXIT_FAILURE);
 	}
+	if (bit < 0 && !c)
+		ft_printf("\nClient say : ");
+	if (bit < 0)
+		bit = __CHAR_BIT__ * sizeof(c) - 1;
+	if (sig == SIGUSR1)
+		c |= 1 << bit;
+	else if (sig == SIGUSR2)
+		c &= ~(1 << bit);
+	if (!bit && c)
+		ft_putchar_fd(c, 1);
+	else if (!bit && !c)
+		kill(info->si_pid, SIGUSR2);
+	bit--;
+	kill(info->si_pid, SIGUSR1);
 }
 
-int	main(int argc, char **argv)
+int	main(void)
 {
-	(void)argv;
-	if (argc != 1)
-	{
-		ft_printf("WRONG FORMAT\nSERVER REQUIRES NO ARGUMENT\n");
-		return (0);
-	}
-	ft_printf("%d\n", getpid());
-	while (argc == 1)
-	{
-		signal(SIGUSR1, main_handler);
-		signal(SIGUSR2, main_handler);
-		pause();
-	}
-	return (0);
+	init_sig(SIGUSR1, &sig_usr);
+	init_sig(SIGUSR2, &sig_usr);
+	ft_printf("pid: %d", getpid());
+	while (1)
+		sleep(1);
 }
